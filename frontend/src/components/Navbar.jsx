@@ -12,7 +12,7 @@ const Navbar = () => {
   
   useEffect(() => {
     dispatch(fetchUser('tharindudkodippili@gmail.com'))
-    console.log(user);
+    console.log(user.fName);
     
   },[])
 
