@@ -1,25 +1,26 @@
-import React, {  useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Menu, X, BookOpen, User, LayoutDashboard,Blocks, Home, LogIn } from 'lucide-react';
 import logo from '../assets/logo-ve-rm.png'
 import { NavLink, useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../features/UserSlice';
+import { fetchUser } from '../features/UserSlice';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const {user , isLoggedin } = useSelector((state) => state.user)
-  const navigate = useNavigate();
   const dispatch = useDispatch()
-  // useEffect(() => {
-  //   dispatch(fetchUser(loggedEmail))
-  //   // console.log(user);
-    
-  // },[loggedEmail])
+  const {user , isLoggedin ,loggedEmail} = useSelector((state) => state.user)
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    dispatch(fetchUser(loggedEmail))    
+  },[loggedEmail])
+
+  const link = isLoggedin? '/profile' : '/login'
 
   // Navigation Links array to keep code clean
   const navLinks = [
     { name: 'Home', href: '/', icon: <Home size={18} /> },
-    { name: 'Profile', href: '/profile', icon: <User size={18} /> },
+    { name: 'Profile', href: link, icon: <User size={18} /> },
     { name: 'Admin', href: '/admin', icon: <LayoutDashboard size={18} /> },
   ];
 
@@ -50,8 +51,7 @@ const Navbar = () => {
                   {link.name}
                 </NavLink>
               ))}
-              {isLoggedin ? <button className='ml-4 bg-[#38BDF8] text-[#0F172A] px-4 py-2 rounded-md text-sm font-bold hover:bg-[#7dd3fc] transition-colors cursor-pointer'
-              onClick={() => dispatch(logout())}>Logout</button> : 
+              {isLoggedin ? <span className="ml-4 bg-[#38BDF8] text-[#0F172A] px-4 py-2 rounded-md text-sm font-bold hover:bg-[#7dd3fc] transition-colors">Hello {user.fName}</span> : 
               <button className="ml-4 bg-[#38BDF8] text-[#0F172A] px-4 py-2 rounded-md text-sm font-bold hover:bg-[#7dd3fc] transition-colors cursor-pointer"
               onClick={() => { navigate('/login') }}>
                 Login 

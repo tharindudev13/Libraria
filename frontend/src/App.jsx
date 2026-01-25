@@ -1,5 +1,4 @@
 import { createBrowserRouter, createRoutesFromElements,Route, RouterProvider } from "react-router";
-import Navbar from "./components/navbar";
 import RootLayout from "./layouts/RootLayout";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";

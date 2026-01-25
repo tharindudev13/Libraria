@@ -2,8 +2,9 @@ import { Mail, Lock, LogIn, VerifiedIcon } from 'lucide-react';
 import logo from '../assets/logo-ve-rm.png'; // Path to your horizontal logo
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser,  } from '../features/UserSlice';
+import { fetchUser, login,  } from '../features/UserSlice';
 import {  useState } from 'react';
+import { Alert } from '../components/Alert';
 
 const Login = () => {
 
@@ -13,16 +14,20 @@ const Login = () => {
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
 
+    const [error,setError] = useState('')
+
     const updateUser = () =>{
         dispatch(fetchUser(email))
     }
 
     const navigateHome = () =>{
+      dispatch(login(email))
       if(password == user.password){
         navigate('/profile')
       }else{
         console.log('Incorrect');
-        
+        setError("Invalid Password. Please Try Again.")
+        setTimeout(() => setError(''), 5000)
       }
       
       
@@ -40,6 +45,7 @@ const Login = () => {
         </div>
 
           {/* Email Field */}
+          <Alert message={error} />
           <div>
             <label className="block text-sm font-medium text-[#94A3B8] mb-2 px-1">Email Address</label>
             <div className="relative">
@@ -71,9 +77,9 @@ const Login = () => {
                 placeholder="••••••••"
               />
             </div>
-            <div className="text-right mt-2">
+            {/* <div className="text-right mt-2">
               <a href="#" className="text-xs text-[#38BDF8] hover:underline">Forgot password?</a>
-            </div>
+            </div> */}
           </div>
 
           {/* Submit Button */}
@@ -81,7 +87,7 @@ const Login = () => {
             onClick={() => {
                 updateUser()
             }}
-            className="w-full mt-2 mb-5 flex items-center justify-center gap-2 bg-[#38BDF8] hover:bg-[#7dd3fc] text-[#0F172A] font-bold py-3 rounded-xl transition-all active:scale-95 shadow-lg shadow-sky-500/20"
+            className="cursor-pointer w-full mt-5 mb-5 flex items-center justify-center gap-2 bg-[#38BDF8] hover:bg-[#7dd3fc] text-[#0F172A] font-bold py-3 rounded-xl transition-all active:scale-95 shadow-lg shadow-sky-500/20"
           >
             <VerifiedIcon size={20} />
             Verify
@@ -90,7 +96,7 @@ const Login = () => {
             onClick={() => {
                 navigateHome()
 }}
-            className="w-full flex items-center justify-center gap-2 bg-[#38BDF8] hover:bg-[#7dd3fc] text-[#0F172A] font-bold py-3 rounded-xl transition-all active:scale-95 shadow-lg shadow-sky-500/20"
+            className="cursor-pointer w-full flex items-center justify-center gap-2 bg-[#38BDF8] hover:bg-[#7dd3fc] text-[#0F172A] font-bold py-3 rounded-xl transition-all active:scale-95 shadow-lg shadow-sky-500/20"
           >
             <LogIn size={20} />
             Sign In
