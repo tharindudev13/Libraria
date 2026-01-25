@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { Menu, X, BookOpen, User, LayoutDashboard,Blocks, Home, LogIn } from 'lucide-react';
 import logo from '../assets/logo-ve-rm.png'
 import { NavLink, useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser } from '../features/UserSlice';
+import { logout } from '../features/UserSlice';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const dispatch = useDispatch()
   const {user , isLoggedin } = useSelector((state) => state.user)
   const navigate = useNavigate();
-  
-  useEffect(() => {
-    dispatch(fetchUser('tharindudkodpippili@gmail.com'))
-    console.log(user);
+  const dispatch = useDispatch()
+  // useEffect(() => {
+  //   dispatch(fetchUser(loggedEmail))
+  //   // console.log(user);
     
-  },[user])
+  // },[loggedEmail])
 
   // Navigation Links array to keep code clean
   const navLinks = [
@@ -51,7 +50,8 @@ const Navbar = () => {
                   {link.name}
                 </NavLink>
               ))}
-              {isLoggedin ? <span className="ml-4 bg-[#38BDF8] text-[#0F172A] px-4 py-2 rounded-md text-sm font-bold hover:bg-[#7dd3fc] transition-colors">Hello {user.fName}</span> : 
+              {isLoggedin ? <button className='ml-4 bg-[#38BDF8] text-[#0F172A] px-4 py-2 rounded-md text-sm font-bold hover:bg-[#7dd3fc] transition-colors cursor-pointer'
+              onClick={() => dispatch(logout())}>Logout</button> : 
               <button className="ml-4 bg-[#38BDF8] text-[#0F172A] px-4 py-2 rounded-md text-sm font-bold hover:bg-[#7dd3fc] transition-colors cursor-pointer"
               onClick={() => { navigate('/login') }}>
                 Login 

@@ -1,9 +1,9 @@
-import { Mail, Lock, LogIn } from 'lucide-react';
+import { Mail, Lock, LogIn, VerifiedIcon } from 'lucide-react';
 import logo from '../assets/logo-ve-rm.png'; // Path to your horizontal logo
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser, login } from '../features/UserSlice';
-import { useState } from 'react';
+import { fetchUser,  } from '../features/UserSlice';
+import {  useState } from 'react';
 
 const Login = () => {
 
@@ -13,13 +13,19 @@ const Login = () => {
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
 
-    const authUser = (email) =>{
-      dispatch(fetchUser(email))
+    const updateUser = () =>{
+        dispatch(fetchUser(email))
+    }
+
+    const navigateHome = () =>{
       if(password == user.password){
         navigate('/profile')
       }else{
-        navigate('/admin')
+        console.log('Incorrect');
+        
       }
+      
+      
     }
   return (
     <div className="flex items-center justify-center min-h-[80vh] px-4">
@@ -33,7 +39,6 @@ const Login = () => {
           <p className="text-[#94A3B8] text-sm mt-2">Please enter your details to sign in</p>
         </div>
 
-        <form className="space-y-6">
           {/* Email Field */}
           <div>
             <label className="block text-sm font-medium text-[#94A3B8] mb-2 px-1">Email Address</label>
@@ -74,22 +79,24 @@ const Login = () => {
           {/* Submit Button */}
           <button 
             onClick={() => {
-                dispatch(login(email))
-                authUser(email)
-                console.log(user);
-                
+                updateUser()
             }}
+            className="w-full mt-2 mb-5 flex items-center justify-center gap-2 bg-[#38BDF8] hover:bg-[#7dd3fc] text-[#0F172A] font-bold py-3 rounded-xl transition-all active:scale-95 shadow-lg shadow-sky-500/20"
+          >
+            <VerifiedIcon size={20} />
+            Verify
+          </button>
+          <button 
+            onClick={() => {
+                navigateHome()
+}}
             className="w-full flex items-center justify-center gap-2 bg-[#38BDF8] hover:bg-[#7dd3fc] text-[#0F172A] font-bold py-3 rounded-xl transition-all active:scale-95 shadow-lg shadow-sky-500/20"
           >
             <LogIn size={20} />
             Sign In
           </button>
-        </form>
 
-        {/* Footer */}
-        <p className="text-center text-sm text-[#94A3B8] mt-8">
-          Don't have an account? <a href="#" className="text-[#38BDF8] font-semibold hover:underline">Sign up</a>
-        </p>
+       
       </div>
     </div>
   );
