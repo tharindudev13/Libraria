@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Menu, X, BookOpen, User, LayoutDashboard,Blocks, Home, LogIn } from 'lucide-react';
 import logo from '../assets/logo-ve-rm.png'
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '../features/UserSlice';
 
@@ -9,12 +9,13 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch()
   const {user , isLoggedin } = useSelector((state) => state.user)
+  const navigate = useNavigate();
   
   useEffect(() => {
-    dispatch(fetchUser('tharindudkodippili@gmail.com'))
-    console.log(user.fName);
+    dispatch(fetchUser('tharindudkodpippili@gmail.com'))
+    console.log(user);
     
-  },[])
+  },[user])
 
   // Navigation Links array to keep code clean
   const navLinks = [
@@ -51,7 +52,8 @@ const Navbar = () => {
                 </NavLink>
               ))}
               {isLoggedin ? <span className="ml-4 bg-[#38BDF8] text-[#0F172A] px-4 py-2 rounded-md text-sm font-bold hover:bg-[#7dd3fc] transition-colors">Hello {user.fName}</span> : 
-              <button className="ml-4 bg-[#38BDF8] text-[#0F172A] px-4 py-2 rounded-md text-sm font-bold hover:bg-[#7dd3fc] transition-colors cursor-pointer">
+              <button className="ml-4 bg-[#38BDF8] text-[#0F172A] px-4 py-2 rounded-md text-sm font-bold hover:bg-[#7dd3fc] transition-colors cursor-pointer"
+              onClick={() => { navigate('/login') }}>
                 Login 
               </button>}
               
@@ -91,7 +93,8 @@ const Navbar = () => {
             </button>
 } */}
           {!isLoggedin &&(
-            <button className="w-full mt-2 bg-[#38BDF8] text-[#0F172A] px-4 py-3 rounded-md font-bold text-center cursor-pointer">
+            <button className="w-full mt-2 bg-[#38BDF8] text-[#0F172A] px-4 py-3 rounded-md font-bold text-center cursor-pointer"
+            onClick={() => { navigate('/login') }}>
               Login
             </button>
           )}
