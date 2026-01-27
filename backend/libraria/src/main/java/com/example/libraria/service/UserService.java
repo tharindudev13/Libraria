@@ -36,4 +36,14 @@ public class UserService {
         }.getType());
      }
 
+   public boolean validateLogin(String email, String password) {
+        Optional<User> userOpt = userRepo.findById(email);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            return user.getPassword().equals(password);
+        }else{
+         return false;
+        }
+    }
+
 }

@@ -8,6 +8,26 @@ import { Alert } from '../components/Alert';
 
 const Login = () => {
 
+    const validateLogin = async (email, password) => {
+        try {
+            const response = await fetch('http://localhost:8080/user/loginreq', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: email,
+                    pwd: password
+                })
+            });
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error("Error validating login:", error);
+            return false;
+        }
+    };
+
     const navigate = useNavigate()
     const {user} = useSelector((state) => state.user)
     const dispatch = useDispatch()
