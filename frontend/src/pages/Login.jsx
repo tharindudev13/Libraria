@@ -1,8 +1,8 @@
 import { Mail, Lock, LogIn, VerifiedIcon } from 'lucide-react';
 import logo from '../assets/logo-ve-rm.png'; // Path to your horizontal logo
 import { useNavigate } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser, login,  } from '../features/UserSlice';
+import { useDispatch } from 'react-redux';
+import { login } from '../features/UserSlice';
 import {  useState } from 'react';
 import { Alert } from '../components/Alert';
 
@@ -10,18 +10,16 @@ const Login = () => {
 
     const validateLogin = async (email, password) => {
         try {
-            const response = await fetch('http://localhost:8080/user/loginreq', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    id: email,
-                    pwd: password
-                })
-            });
+            const response = await fetch(`http://localhost:8090/api/v1/users/loginreq?id=${email}&pwd=${password}`);
             const result = await response.json();
-            return result;
+            if(result === true){
+              // Update Redux state
+              dispatch(login(email));
+              navigate('/profile');
+            }else{
+              setError("Invalid Credentials. Please Try Again.")
+              setTimeout(() => setError(''), 5000)
+            }
         } catch (error) {
             console.error("Error validating login:", error);
             return false;
@@ -29,29 +27,11 @@ const Login = () => {
     };
 
     const navigate = useNavigate()
-    const {user} = useSelector((state) => state.user)
     const dispatch = useDispatch()
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
-
     const [error,setError] = useState('')
 
-    const updateUser = () =>{
-        dispatch(fetchUser(email))
-    }
-
-    const navigateHome = () =>{
-      dispatch(login(email))
-      if(password == user.password){
-        navigate('/profile')
-      }else{
-        console.log('Incorrect');
-        setError("Invalid Password. Please Try Again.")
-        setTimeout(() => setError(''), 5000)
-      }
-      
-      
-    }
   return (
     <div className="flex items-center justify-center min-h-[80vh] px-4">
       {/* Card Container */}
@@ -102,21 +82,11 @@ const Login = () => {
             </div> */}
           </div>
 
-          {/* Submit Button */}
           <button 
             onClick={() => {
-                updateUser()
-            }}
-            className="cursor-pointer w-full mt-5 mb-5 flex items-center justify-center gap-2 bg-[#38BDF8] hover:bg-[#7dd3fc] text-[#0F172A] font-bold py-3 rounded-xl transition-all active:scale-95 shadow-lg shadow-sky-500/20"
-          >
-            <VerifiedIcon size={20} />
-            Verify
-          </button>
-          <button 
-            onClick={() => {
-                navigateHome()
+                validateLogin(email, password)
 }}
-            className="cursor-pointer w-full flex items-center justify-center gap-2 bg-[#38BDF8] hover:bg-[#7dd3fc] text-[#0F172A] font-bold py-3 rounded-xl transition-all active:scale-95 shadow-lg shadow-sky-500/20"
+            className="cursor-pointer mt-5 w-full flex items-center justify-center gap-2 bg-[#38BDF8] hover:bg-[#7dd3fc] text-[#0F172A] font-bold py-3 rounded-xl transition-all active:scale-95 shadow-lg shadow-sky-500/20"
           >
             <LogIn size={20} />
             Sign In
