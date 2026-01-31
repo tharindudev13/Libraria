@@ -16,4 +16,5 @@ public class BookDto {
     private Integer total_copies;
     private Integer available_copies;
     private String image_url;
+    private String language;
 }
