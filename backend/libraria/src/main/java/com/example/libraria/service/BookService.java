@@ -28,4 +28,9 @@ public class BookService {
         return modelMapper.map(book, new TypeToken<BookDto>(){}.getType());
         
     }
+
+    public Iterable<BookDto> getAllBooks(){
+        Iterable<Book> books = bookRepo.findAll();
+        return modelMapper.map(books, new TypeToken<Iterable<BookDto>>(){}.getType());
+    }
 }

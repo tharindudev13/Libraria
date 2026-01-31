@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
+
+
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("api/v1/books")
@@ -25,10 +27,14 @@ public class BookController {
         return "Controller is working";
     }
 
+    @GetMapping("/getallbooks")
+    public Iterable<BookDto> getAllBooks(){
+        return bookService.getAllBooks();
+    }
+
     @GetMapping("/book/{isbn}")
     public BookDto getBook(@PathVariable String isbn){
         return bookService.getBook(isbn);
     }
-    
 
 }

@@ -19,4 +19,6 @@ public class Book {
     private String category;
     private Integer total_copies;
     private Integer available_copies;
+    private String image_url;
+
 }
