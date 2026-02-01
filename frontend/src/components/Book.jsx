@@ -1,12 +1,11 @@
-import React from 'react';
-import { BookOpen, User, CheckCircle2, XCircle, ArrowRight ,Blocks, Languages, Code, Key } from 'lucide-react';
+import {  User, CheckCircle2, XCircle, ArrowRight ,Blocks, Languages,  Key } from 'lucide-react';
 
 const Book = ({ book }) => {
   // Logic to determine availability colors
   const isAvailable = book.available_copies > 0;
 
   return (
-   <div className="flex flex-col sm:flex-row bg-[#1E293B] border border-[#334155] rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-sky-500/5 min-h-[220px]">
+   <div className="flex flex-col sm:flex-row bg-[#1E293B] border border-[#334155] rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-sky-500/5 min-h-55">
       
       {/* 1. Left Side: Image Container */}
       <div className="w-full sm:w-1/3 bg-[#0F172A] p-4 flex items-center justify-center border-b sm:border-b-0 sm:border-r border-[#334155]">
@@ -29,7 +28,7 @@ const Book = ({ book }) => {
             <h3 className="text-xl font-bold text-[#F8FAFC] leading-tight pr-4">
               {book.title || "Untitled Book"}
             </h3>
-            <span className={`flex-shrink-0 flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border ${
+            <span className={`shrink-0 flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border ${
               isAvailable 
                 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
                 : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
@@ -71,7 +70,7 @@ const Book = ({ book }) => {
                 : 'bg-[#334155] text-[#64748B] cursor-not-allowed'
             }`}
           >
-            Lend
+            Reserve
             <ArrowRight size={16} />
           </button>
         </div>

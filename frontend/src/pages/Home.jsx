@@ -41,14 +41,15 @@ function Home(){
           {/* Category Header */}
           <div className="flex items-center gap-4 mb-6">
             <h2 className="text-xl font-semibold text-[#38BDF8] uppercase tracking-wider">
-              {categoryName}
+              {categoryName} 
             </h2>
-            <div className="h-[1px] flex-grow bg-[#334155]"></div>
+            <div className="h-px grow bg-[#334155]"></div>
+              <span className="text-sm ml-1 text-[#38BDF8] uppercase"> see all</span>
           </div>
 
           {/* 3-Column Grid for PC */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {categories[categoryName].map((book) => (
+            {categories[categoryName].slice(0, 3).map((book) => (
               <Book key={book.isbn} book={book} />
             ))}
           </div>
