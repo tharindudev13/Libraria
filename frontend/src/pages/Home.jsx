@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
 import Book from "../components/Book";
+import { Link } from "react-router";
+import { useDispatch} from "react-redux";
+import { getBooks} from "../features/BookSlice";
+
 
 function Home(){
 
     const [books,setBooks] = useState([])
+    const dispatch = useDispatch()
+    // const book = useSelector((state) => {return state.book})
 
     useEffect(() => {
     
@@ -12,6 +18,7 @@ function Home(){
         const response = await fetch('http://localhost:8090/api/v1/books/getallbooks');
         const result = await response.json();
         setBooks(result);
+        dispatch(getBooks(result))
       } catch (error) {
         console.error("Fetch failed:", error);
       }
@@ -21,15 +28,17 @@ function Home(){
   
 }, []); 
 
-    const categories = books.reduce((acc, book) => {
+   const categories = books.reduce((acc, book) => {
         const cat = book.category || "General";
         if (!acc[cat]) acc[cat] = [];
         acc[cat].push(book);
-        return acc;
+          return acc;
     }, {});
-
     console.log(books);
-
+    // console.log(book.books);
+    
+    
+    
 
     return(
         <>
@@ -44,9 +53,9 @@ function Home(){
               {categoryName} 
             </h2>
             <div className="h-px grow bg-[#334155]"></div>
-              <span className="text-sm ml-1 text-[#38BDF8] uppercase"> see all</span>
+              <span className="text-sm ml-1 text-[#38BDF8] uppercase"> <Link to={`category/${categoryName}`}> see all </Link></span>
           </div>
-
+          
           {/* 3-Column Grid for PC */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {categories[categoryName].slice(0, 3).map((book) => (

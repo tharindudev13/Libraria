@@ -1,19 +1,28 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import axios from "axios"
+import {  createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
     loading : 'false',
     error: '',
-    books: [] 
+    books: [],
+    categories: {}
 }
 
-export const getAllBooks = createAsyncThunk('book/getallbooks', async() => {
-    const response = await axios.get('http://localhost:8090/api/v1/books/getallbooks')
-    return response.data
-})
 
 const BookSlice = createSlice({
     name : 'books',
     initialState,
+    reducers: {
+        getBooks : (state,action) =>{
+            state.books = action.payload
+        },
+        getCategories: (state,action) =>{
+            state.categories = action.payload
+        }
+        
+    }
 
 })
+
+
+export default BookSlice.reducer
+export const {getBooks,getCategories} = BookSlice.actions
