@@ -39,7 +39,6 @@ public class UserController {
 
     @GetMapping("/loginreq")
     public boolean loginReq(@RequestParam String id,@RequestParam String pwd) {
-        //TODO: process POST request
         return userService.validateLogin(id, pwd);
     }
     
