@@ -8,6 +8,12 @@ import { Alert } from '../components/Alert';
 
 const Login = () => {
 
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [email,setEmail] = useState('')
+  const [password,setPassword] = useState('')
+  const [error,setError] = useState('')
+
     const validateLogin = async (email, password) => {
         try {
             const response = await fetch(`http://localhost:8090/api/v1/users/loginreq?id=${email}&pwd=${password}`);
@@ -15,7 +21,7 @@ const Login = () => {
             if(result === true){
               // Update Redux state
               dispatch(login(email));
-              navigate('/profile');
+              navigate('/');
             }else{
               setError("Invalid Credentials. Please Try Again.")
               setTimeout(() => setError(''), 5000)
@@ -26,11 +32,10 @@ const Login = () => {
         }
     };
 
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const [email,setEmail] = useState('')
-    const [password,setPassword] = useState('')
-    const [error,setError] = useState('')
+
+    
+
+    
 
   return (
     <div className="flex items-center justify-center min-h-[80vh] px-4">

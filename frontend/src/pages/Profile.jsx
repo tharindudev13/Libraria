@@ -1,10 +1,33 @@
-import React from 'react';
 import { User, Mail, Calendar, BookOpen, Clock, History } from 'lucide-react';
-import { useSelector } from 'react-redux';
+import {  useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getLends } from '../features/Lends';
+// import { useEffect,useState } from 'react';
 
 const Profile = () => {
   // Pulling the user from your Redux store
   const { user } = useSelector((state) => state.user);
+  // const lend = useSelector((state) => state.lend.lends);
+  const[lends,setLends] = useState([])
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+        const fetchLendingHistory = async () => {
+          try {
+            const response = await fetch(`http://localhost:8090/api/v1/lends/getlends/${user.email}`);
+            const data = await response.json();
+            setLends(data);
+            dispatch(getLends(data))
+            // Process the data as needed
+           }catch (error) {
+            console.error("Error fetching lending history:", error);
+        }
+      }
+      fetchLendingHistory();
+   
+    }, []);  
+  
+  
 
   // Dummy data for Lending History
   const lendingHistory = [
@@ -69,10 +92,10 @@ const Profile = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#334155]">
-                  {lendingHistory.map(item => (
-                    <tr key={item.id} className="hover:bg-[#334155]/30 transition-colors">
-                      <td className="p-4 font-medium">{item.title}</td>
-                      <td className="p-4 text-sm text-[#94A3B8]">{item.date}</td>
+                  {lends.map((item,index) => (
+                    <tr key={index} className="hover:bg-[#334155]/30 transition-colors">
+                      <td className="p-4 font-medium">{item.isbn}</td>
+                      <td className="p-4 text-sm text-[#94A3B8]">{item.isbn}</td>
                       <td className="p-4">
                         <span className="text-xs bg-green-500/10 text-green-400 px-2 py-1 rounded-full border border-green-500/20">
                           {item.status}
