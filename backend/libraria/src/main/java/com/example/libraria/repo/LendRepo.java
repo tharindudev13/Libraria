@@ -13,7 +13,7 @@ import com.example.libraria.model.Lend;
 
 @Repository
 public interface LendRepo extends JpaRepository<Lend ,Integer>{
-    @Query(value = "SELECT * FROM Lend WHERE email = ?1",nativeQuery = true)
+    @Query(value = "SELECT * FROM Lend WHERE email = ?1 ",nativeQuery = true)
     Iterable<Lend> findLendsByUser(String email);
 
     @Query(value = "SELECT * FROM Book WHERE isbn = ?1",nativeQuery = true)
