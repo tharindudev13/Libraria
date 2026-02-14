@@ -18,6 +18,8 @@ public class Lend {
     private String email;
     private String isbn;
     private Date lend_date;
+    private String status;
+    private Date returnedDate;
     private String title;
 
 }
