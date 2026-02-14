@@ -14,4 +14,5 @@ public class LendDto {
     private String email;
     private String isbn;
     private Date lend_date;
+    private String title;
 }

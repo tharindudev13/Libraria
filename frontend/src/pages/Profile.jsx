@@ -6,6 +6,7 @@ const Profile = () => {
   // Pulling the user from your Redux store
   const { user } = useSelector((state) => state.user);
 
+
   // Dummy data for Lending History
   const lendingHistory = [
     { id: 1, title: "Clean Code", date: "2023-11-12", status: "Returned" },
@@ -18,7 +19,7 @@ const Profile = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0F172A] text-[#F8FAFC] p-4 md:p-8">
+    <div className="min-h-screen bg-[#0F172A] text-[#F8FAFC] p-4 md:p-8"><s></s>
       <div className="max-w-6xl mx-auto space-y-8">
         
         {/* SECTION 1: Personal Details Header */}
