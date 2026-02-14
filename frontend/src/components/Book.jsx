@@ -1,8 +1,23 @@
 import {  User, CheckCircle2, XCircle, ArrowRight ,Blocks, Languages,  Key } from 'lucide-react';
+import { useSelector } from 'react-redux';
 
 const Book = ({ book }) => {
   // Logic to determine availability colors
   const isAvailable = book.available_copies > 0;
+  const user = useSelector((state) => {return state.user})
+
+  const handleReserve = async () => {
+    try{
+      const response = await fetch(`http://localhost:8090/api/v1/lends/newLends?email=${user.loggedEmail}&isbn=${book.isbn}`,
+        {method: 'POST'}
+      )
+      const result = await response.text()
+      console.log(result);
+    }catch(error){
+      console.error("Error: ",error)
+    }
+   
+  }
 
   return (
    <div className="flex flex-col sm:flex-row bg-[#1E293B] border border-[#334155] rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-sky-500/5 min-h-55">
@@ -62,7 +77,8 @@ const Book = ({ book }) => {
             </p>
           </div>
 
-          <button 
+          <button
+            onClick={handleReserve} 
             disabled={!isAvailable}
             className={`flex items-center cursor-pointer gap-2 px-5 py-2 rounded-xl font-bold text-sm transition-all ${
               isAvailable 
