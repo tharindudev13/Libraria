@@ -20,11 +20,12 @@ public interface LendRepo extends JpaRepository<Lend ,Integer>{
     Optional<Book> getAvlCopies(String isbn);
     
     @Modifying
-    @Query(value = "INSERT INTO Lend(isbn,lend_date,email) VALUES(?2,?3,?1)",nativeQuery = true)
-    void newLend(String email, String isbn,Date date);
+    @Query(value = "INSERT INTO Lend(isbn,lend_date,email,title) VALUES(?2,?3,?1,?4)",nativeQuery = true)
+    void newLend(String email, String isbn,Date date,String title);
 
     @Modifying
     @Query(value = "UPDATE Book SET available_copies = available_copies - 1 WHERE isbn = ?1",nativeQuery = true)
     void updateAvlCopies(String isbn);
 
+    
 }

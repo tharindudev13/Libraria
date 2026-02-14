@@ -9,24 +9,24 @@ function Home(){
 
     const [books,setBooks] = useState([])
     const dispatch = useDispatch()
+    
     // const book = useSelector((state) => {return state.book})
 
     useEffect(() => {
     
-    const getAllBooks = async () => {
-      try {
-        const response = await fetch('http://localhost:8090/api/v1/books/getallbooks');
-        const result = await response.json();
-        setBooks(result);
-        dispatch(getBooks(result))
-      } catch (error) {
-        console.error("Fetch failed:", error);
-      }
-    };
+      const getAllBooks = async () => {
+        try {
+          const response = await fetch('http://localhost:8090/api/v1/books/getallbooks');
+          const result = await response.json();
+          setBooks(result);
+          dispatch(getBooks(result))
+        } catch (error) {
+          console.error("Fetch failed:", error);
+        }
+      };
+      getAllBooks();
+  }, []); 
 
-    getAllBooks();
-  
-}, []); 
 
    const categories = books.reduce((acc, book) => {
         const cat = book.category || "General";
@@ -34,11 +34,7 @@ function Home(){
         acc[cat].push(book);
           return acc;
     }, {});
-    console.log(books);
-    // console.log(book.books);
-    
-    
-    
+        
 
     return(
         <>
