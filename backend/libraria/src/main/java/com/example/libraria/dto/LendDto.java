@@ -17,5 +17,4 @@ public class LendDto {
     private String status;
     private Date returnedDate;
     private String title;
-
 }

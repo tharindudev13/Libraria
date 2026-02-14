@@ -21,5 +21,5 @@ public class Lend {
     private String status;
     private Date returnedDate;
     private String title;
-    
+
 }
