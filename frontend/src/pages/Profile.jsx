@@ -7,8 +7,8 @@ import { getLends } from '../features/Lends';
 const Profile = () => {
   // Pulling the user from your Redux store
   const { user } = useSelector((state) => state.user);
-  // const lend = useSelector((state) => state.lend.lends);
   const[lends,setLends] = useState([])
+  
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -24,21 +24,44 @@ const Profile = () => {
         }
       }
       fetchLendingHistory();
-   
+    
     }, []);  
-  
-  
 
-  // Dummy data for Lending History
-  const lendingHistory = [
-    { id: 1, title: "Clean Code", date: "2023-11-12", status: "Returned" },
-    { id: 2, title: "The Pragmatic Programmer", date: "2023-10-05", status: "Returned" },
-  ];
 
-  // Dummy data for Current Lends
-  const currentLends = [
-    { id: 101, title: "React Design Patterns", dueDate: "2024-02-10", fine: "0.00" },
-  ];
+  const updatedLends = lends.map(lend => {
+    const date = new Date(lend.lend_date)
+    date.setMonth(date.getMonth() + 1)
+
+    const gap = new Date() - date
+    const diffInDays = Math.round(gap / (1000 * 60 *60 * 24))
+    
+    const dueDate = date.toLocaleDateString('en-GB')
+    
+    const returnedDate = new Date(lend.returnedDate).toLocaleDateString('en-GB')
+
+    
+    let fine
+    
+    if(diffInDays > 0){
+      fine = diffInDays * 20.0
+    }else{
+      fine = 0.0
+    }
+    
+    
+
+    return{
+      ...lend,
+      dueDate: dueDate,
+      returnedDate: returnedDate,
+      fine
+    }
+  })
+
+ 
+  
+  const returned = updatedLends.filter(lend => lend.status == "returned")
+  const active = updatedLends.filter(lend => lend.status =="Due")
 
   return (
     <div className="min-h-screen bg-[#0F172A] text-[#F8FAFC] p-4 md:p-8">
@@ -65,12 +88,12 @@ const Profile = () => {
             <h3 className="text-xl font-semibold flex items-center gap-2">
               <BookOpen className="text-[#38BDF8]" /> Current Lends
             </h3>
-            {currentLends.map(book => (
-              <div key={book.id} className="bg-[#1E293B] border-l-4 border-[#38BDF8] p-4 rounded-r-xl">
+            {active.map(book => (
+              <div key={book.isbn} className="bg-[#1E293B] border-l-4 border-[#38BDF8] p-4 rounded-r-xl">
                 <h4 className="font-bold">{book.title}</h4>
                 <p className="text-sm text-[#94A3B8] mt-1">Due: {book.dueDate}</p>
                 <div className="mt-3 flex justify-between items-center text-xs">
-                   <span className="bg-[#0F172A] px-2 py-1 rounded text-[#38BDF8]">Fine: ${book.fine}</span>
+                   <span className="bg-[#0F172A] px-2 py-1 rounded text-[#38BDF8]">Fine: {book.fine} LKR</span>
                    <button className="text-[#38BDF8] hover:underline">Renew</button>
                 </div>
               </div>
@@ -92,10 +115,10 @@ const Profile = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#334155]">
-                  {lends.map((item,index) => (
+                  {returned.map((item,index) => (
                     <tr key={index} className="hover:bg-[#334155]/30 transition-colors">
-                      <td className="p-4 font-medium">{item.isbn}</td>
-                      <td className="p-4 text-sm text-[#94A3B8]">{item.isbn}</td>
+                      <td className="p-4 font-medium">{item.title}</td>
+                      <td className="p-4 text-sm text-[#94A3B8]">{item.returnedDate}</td>
                       <td className="p-4">
                         <span className="text-xs bg-green-500/10 text-green-400 px-2 py-1 rounded-full border border-green-500/20">
                           {item.status}

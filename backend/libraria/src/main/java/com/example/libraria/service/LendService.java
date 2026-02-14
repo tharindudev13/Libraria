@@ -36,8 +36,9 @@ public class LendService {
 
             if(bookOpt.isPresent()){
                 Book book = bookOpt.get();
+                String title = book.getTitle();
                 if (book.getAvailable_copies() > 0) {
-                    lendRepo.newLend(email, isbn, date);
+                    lendRepo.newLend(email,isbn, date,title);
                     lendRepo.updateAvlCopies(isbn);
                     return "You Successfuly reserved this book";
                 }

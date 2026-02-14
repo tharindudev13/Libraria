@@ -16,4 +16,6 @@ public class LendDto {
     private Date lend_date;
     private String status;
     private Date returnedDate;
+    private String title;
+
 }

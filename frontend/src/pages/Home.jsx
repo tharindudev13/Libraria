@@ -24,10 +24,7 @@ function Home(){
           console.error("Fetch failed:", error);
         }
       };
-
       getAllBooks();
-      
-  
   }, []); 
 
 
@@ -37,9 +34,7 @@ function Home(){
         acc[cat].push(book);
           return acc;
     }, {});
-    
-    
-    
+        
 
     return(
         <>
