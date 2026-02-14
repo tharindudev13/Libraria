@@ -11,21 +11,12 @@ const Profile = () => {
   
   const dispatch = useDispatch()
 
-  useEffect(() => {
-        const fetchLendingHistory = async () => {
-          try {
-            const response = await fetch(`http://localhost:8090/api/v1/lends/getlends/${user.email}`);
-            const data = await response.json();
-            setLends(data);
-            dispatch(getLends(data))
-            // Process the data as needed
-           }catch (error) {
-            console.error("Error fetching lending history:", error);
-        }
-      }
-      fetchLendingHistory();
-    
-    }, []);  
+
+  // Dummy data for Lending History
+  const lendingHistory = [
+    { id: 1, title: "Clean Code", date: "2023-11-12", status: "Returned" },
+    { id: 2, title: "The Pragmatic Programmer", date: "2023-10-05", status: "Returned" },
+  ];
 
 
   const updatedLends = lends.map(lend => {
@@ -64,7 +55,7 @@ const Profile = () => {
   const active = updatedLends.filter(lend => lend.status =="Due")
 
   return (
-    <div className="min-h-screen bg-[#0F172A] text-[#F8FAFC] p-4 md:p-8">
+    <div className="min-h-screen bg-[#0F172A] text-[#F8FAFC] p-4 md:p-8"><s></s>
       <div className="max-w-6xl mx-auto space-y-8">
         
         {/* SECTION 1: Personal Details Header */}

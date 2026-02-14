@@ -64,7 +64,7 @@ const Book = ({ book }) => {
 
           <button 
             disabled={!isAvailable}
-            className={`flex items-center gap-2 px-5 py-2 rounded-xl font-bold text-sm transition-all ${
+            className={`flex items-center cursor-pointer gap-2 px-5 py-2 rounded-xl font-bold text-sm transition-all ${
               isAvailable 
                 ? 'bg-[#38BDF8] text-[#0F172A] hover:bg-[#7dd3fc] active:scale-95 shadow-lg shadow-sky-500/20' 
                 : 'bg-[#334155] text-[#64748B] cursor-not-allowed'
