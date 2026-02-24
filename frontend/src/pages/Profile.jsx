@@ -1,5 +1,5 @@
 import { User, Mail, Calendar, BookOpen, Clock, History } from 'lucide-react';
-import {  useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLends } from '../features/Lends';
 // import { useEffect,useState } from 'react';
@@ -8,8 +8,11 @@ const Profile = () => {
   // Pulling the user from your Redux store
   const { user } = useSelector((state) => state.user);
   const[lends,setLends] = useState([])
+
   
   const dispatch = useDispatch()
+
+ 
 
   useEffect(() => {
         const fetchLendingHistory = async () => {
@@ -27,21 +30,23 @@ const Profile = () => {
     
     }, []);  
 
+    
+
 
   const updatedLends = lends.map(lend => {
-    const date = new Date(lend.lend_date)
-    date.setMonth(date.getMonth() + 1)
+    const date = new Date(lend.dueDate)
 
     const gap = new Date() - date
-    const diffInDays = Math.round(gap / (1000 * 60 *60 * 24))
+    const diffInDays = Math.floor(gap / (1000 * 60 *60 * 24))
     
-    const dueDate = date.toLocaleDateString('en-GB')
-    
-    const returnedDate = new Date(lend.returnedDate).toLocaleDateString('en-GB')
-
-    
-    let fine
-    
+    const dueDate = new Date(lend.dueDate).toLocaleDateString('en-GB')
+  
+    if(lend.returnedDate){
+      var returnedDate = new Date(lend.returnedDate).toLocaleDateString('en-GB')
+      
+    }
+ 
+    let fine    
     if(diffInDays > 0){
       fine = diffInDays * 20.0
     }else{
@@ -49,12 +54,27 @@ const Profile = () => {
     }
     return{
       ...lend,
-      dueDate: dueDate,
       returnedDate: returnedDate,
+      dueDate: dueDate,
       fine
     }
   })
 
+  
+
+  const handleRenew = async (lend) => {
+    try{
+      const response = await fetch(`http://localhost:8090/api/v1/lends/renew/${lend.lend_id}`,{
+        method: 'PUT'
+      })
+      if(response.ok){
+        const updatedLend = {...lend, dueDate: new Date(lend.dueDate).toLocaleDateString('en-GB'),fine: 0.0}
+        setLends(prev => prev.map(l => l.lend_id === lend.lend_id ? updatedLend : l))
+        window.alert("Book renewed successfully!")}
+    }catch(error){
+      console.error("Error renewing book:", error)
+    }
+  }
  
   
   const returned = updatedLends.filter(lend => lend.status == "returned")
@@ -91,7 +111,7 @@ const Profile = () => {
                 <p className="text-sm text-[#94A3B8] mt-1">Due: {book.dueDate}</p>
                 <div className="mt-3 flex justify-between items-center text-xs">
                    <span className="bg-[#0F172A] px-2 py-1 rounded text-[#38BDF8]">Fine: {book.fine} LKR</span>
-                   <button className="text-[#38BDF8] hover:underline">Renew</button>
+                   <button className="text-[#38BDF8] hover:underline cursor-pointer" onClick={() => handleRenew(book)}>Renew</button>
                 </div>
               </div>
             ))}

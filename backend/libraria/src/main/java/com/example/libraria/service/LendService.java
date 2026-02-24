@@ -33,19 +33,38 @@ public class LendService {
         public String newLend(String isbn,String email){
             Optional<Book> bookOpt = lendRepo.getAvlCopies(isbn);
             Date date = Date.valueOf(LocalDate.now());
+            Iterable<Lend> lends = lendRepo.findLendByEmail(email);
+            Date dueDate = Date.valueOf(LocalDate.now().plusMonths(1));
+
+            if (lends != null) {
+                for (Lend lend : lends) {
+                    if (lend.getIsbn().equals(isbn) && lend.getReturnedDate() == null) {
+                        return "You have already reserved this book";
+                    }
+                }
+            }
 
             if(bookOpt.isPresent()){
                 Book book = bookOpt.get();
                 String title = book.getTitle();
                 if (book.getAvailable_copies() > 0) {
-                    lendRepo.newLend(email,isbn, date,title);
+                    lendRepo.newLend(email,isbn, date,title,dueDate);
                     lendRepo.updateAvlCopies(isbn);
                     return "You Successfuly reserved this book";
                 }
             }
+            
 
             return "Failed to Reserve book";
         }
 
+
+        public String renewLend(Integer lendId){
+            Optional<Lend> lendOpt = lendRepo.findLendByLendID(lendId);
+            Lend lend = lendOpt.get();
+            Date newDueDate = Date.valueOf(lend.getDueDate().toLocalDate().plusMonths(1));
+            lendRepo.renewLend(lendId, newDueDate);
+            return "Lend renewed successfully";
+        }
 
 }

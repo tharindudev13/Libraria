@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import com.example.libraria.model.Book;
 import com.example.libraria.model.Lend;
+import java.util.List;
+
 
 @Repository
 public interface LendRepo extends JpaRepository<Lend ,Integer>{
@@ -20,12 +22,22 @@ public interface LendRepo extends JpaRepository<Lend ,Integer>{
     Optional<Book> getAvlCopies(String isbn);
     
     @Modifying
-    @Query(value = "INSERT INTO Lend(isbn,lend_date,email,title) VALUES(?2,?3,?1,?4)",nativeQuery = true)
-    void newLend(String email, String isbn,Date date,String title);
+    @Query(value = "INSERT INTO Lend(isbn,lend_date,email,title,due_date) VALUES(?2,?3,?1,?4,?5)",nativeQuery = true)
+    void newLend(String email, String isbn,Date date,String title,Date dueDate);
 
     @Modifying
     @Query(value = "UPDATE Book SET available_copies = available_copies - 1 WHERE isbn = ?1",nativeQuery = true)
     void updateAvlCopies(String isbn);
+
+    @Query(value = "SELECT * FROM Lend WHERE email = ?1",nativeQuery = true)
+    Iterable<Lend> findLendByEmail(String email);
+
+    @Modifying
+    @Query(value = "UPDATE Lend SET due_date = ?2 WHERE lend_id = ?1",nativeQuery = true)
+    void renewLend(Integer lend_id,Date due);
+
+    @Query(value = "SELECT * FROM Lend WHERE lend_id = ?1",nativeQuery = true)
+    Optional<Lend> findLendByLendID(Integer lend_id);
 
     
 }

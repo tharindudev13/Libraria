@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.libraria.dto.LendDto;
 import com.example.libraria.service.LendService;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -31,8 +33,16 @@ public class LendController {
         return lendService.getLendsByEmail(email);
     }
 
+    
+    @PutMapping("/renew/{lendId}")
+    public String renewLend(@PathVariable Integer lendId){
+        return lendService.renewLend(lendId);
+    }
+
     @PostMapping("/newLends")
     public String newLend(@RequestParam String email, @RequestParam String isbn){
         return lendService.newLend(isbn, email);
     }
+
+   
 }

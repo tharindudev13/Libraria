@@ -7,12 +7,16 @@ const Book = ({ book }) => {
   const user = useSelector((state) => {return state.user})
 
   const handleReserve = async () => {
+    if(!user.isLoggedin){
+      window.alert("Please login to reserve books.")
+      return
+    }
     try{
       const response = await fetch(`http://localhost:8090/api/v1/lends/newLends?email=${user.loggedEmail}&isbn=${book.isbn}`,
         {method: 'POST'}
       )
       const result = await response.text()
-      console.log(result);
+      window.alert(result)
     }catch(error){
       console.error("Error: ",error)
     }
