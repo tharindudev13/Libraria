@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import com.example.libraria.model.Book;
 import com.example.libraria.model.Lend;
-import java.util.List;
 
 
 @Repository
@@ -38,6 +37,8 @@ public interface LendRepo extends JpaRepository<Lend ,Integer>{
 
     @Query(value = "SELECT * FROM Lend WHERE lend_id = ?1",nativeQuery = true)
     Optional<Lend> findLendByLendID(Integer lend_id);
+
+    
 
     
 }

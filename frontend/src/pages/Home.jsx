@@ -3,14 +3,15 @@ import Book from "../components/Book";
 import { Link } from "react-router";
 import { useDispatch} from "react-redux";
 import { getBooks} from "../features/BookSlice";
+import { Search } from "lucide-react";
+import SearchBar from "../components/SearchBar";
 
 
 function Home(){
 
     const [books,setBooks] = useState([])
     const dispatch = useDispatch()
-    
-    // const book = useSelector((state) => {return state.book})
+
 
     useEffect(() => {
     
@@ -34,11 +35,14 @@ function Home(){
         acc[cat].push(book);
           return acc;
     }, {});
-        
+
 
     return(
         <>
        <div className="p-6 md:p-12 bg-[#0F172A] min-h-screen text-white">
+
+      <SearchBar category = ""/>
+
       <h1 className="text-3xl font-bold mb-10 border-b border-[#334155] pb-4">All Books</h1>
 
       {Object.keys(categories).map((categoryName) => (

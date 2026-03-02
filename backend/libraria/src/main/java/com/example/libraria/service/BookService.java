@@ -1,5 +1,6 @@
 package com.example.libraria.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -33,4 +34,14 @@ public class BookService {
         Iterable<Book> books = bookRepo.findAll();
         return modelMapper.map(books, new TypeToken<Iterable<BookDto>>(){}.getType());
     }
+
+    
+    public List<Book> searchBooks(String keyword){
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            keyword = keyword.toLowerCase();    
+            return bookRepo.searchBooks(keyword);
+        }else{
+            return List.of(); // Return an empty list if the keyword is null or empty
+        }
+    } 
 }

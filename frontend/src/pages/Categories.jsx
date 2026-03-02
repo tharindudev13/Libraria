@@ -1,5 +1,7 @@
 import { useSelector } from "react-redux"
 import Book from "../components/Book";
+import { Search } from "lucide-react";
+import SearchBar from "../components/SearchBar";
 
 function Categories(props){
 
@@ -13,9 +15,13 @@ function Categories(props){
     }, {});
 
     const category = props.category
+  
 return(
     <>
        <div className="p-6 md:p-12 bg-[#0F172A] min-h-screen text-white">
+     
+      <SearchBar category = {category} />
+  
 
         <div className="flex items-center gap-4 mb-6">
             <h2 className="text-xl font-semibold text-[#38BDF8] uppercase tracking-wider">
