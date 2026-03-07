@@ -10,4 +10,5 @@ import com.example.libraria.model.User;
 public interface UserRepo extends JpaRepository<User ,String> {
     @Query(value = "SELECT * FROM User WHERE isLoggedin = true", nativeQuery = true)
     User findLoggedInUser();
+
 }

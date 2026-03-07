@@ -11,6 +11,7 @@ import com.example.libraria.service.UserService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 
 
@@ -32,7 +33,7 @@ public class UserController {
         return userService.getLoggedInUser();
     }
     
-    @GetMapping("/test")
+    @PostMapping("/test")
     public String testEndpoint() {
         return "User Controller is working!";
     }
