@@ -19,5 +19,6 @@ public class User {
     private String Address;
     private Integer phone;
     private Boolean isLoggedin;
+    private String role;
 
 }

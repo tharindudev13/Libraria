@@ -16,7 +16,9 @@ function SearchBar(props){
           try{
             const response = await fetch(`http://localhost:8090/api/v1/books/search?keyword=${searchTerm}`)
             const result = await response.json()
-            setSerchResults(result)        
+            setSerchResults(result)
+            console.log(result);
+                    
           }catch (error){
             console.error("Search failed:", error);
     

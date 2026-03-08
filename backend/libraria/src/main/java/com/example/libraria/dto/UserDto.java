@@ -15,4 +15,5 @@ public class UserDto {
     private String Address;
     private Integer phone;
     private Boolean isLoggedin;
+    private String role;
 }

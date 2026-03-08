@@ -1,5 +1,5 @@
 import { User, Mail, Calendar, BookOpen, Clock, History } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLends } from '../features/Lends';
 // import { useEffect,useState } from 'react';
@@ -12,12 +12,22 @@ const Profile = () => {
   
   const dispatch = useDispatch()
 
- 
+  const token = localStorage.getItem('auth')
+
+  
+  
+  
 
   useEffect(() => {
         const fetchLendingHistory = async () => {
           try {
-            const response = await fetch(`http://localhost:8090/api/v1/lends/getlends/${user.email}`);
+            const response = await fetch(`http://localhost:8090/api/v1/lends/getlends/${user.email}`,{
+              method: 'GET',
+              headers: {
+                "Authorization": `Basic ${token}`,
+                'Content-Type': 'application/json'
+              }
+            });
             const data = await response.json();
             setLends(data);
             dispatch(getLends(data))
@@ -32,6 +42,7 @@ const Profile = () => {
 
     
 
+    
 
   const updatedLends = lends.map(lend => {
     const date = new Date(lend.dueDate)
@@ -65,7 +76,11 @@ const Profile = () => {
   const handleRenew = async (lend) => {
     try{
       const response = await fetch(`http://localhost:8090/api/v1/lends/renew/${lend.lend_id}`,{
-        method: 'PUT'
+        method: 'PUT',
+        headers: {
+                "Authorization": `Basic ${token}`,
+                'Content-Type': 'application/json'
+              }
       })
       if(response.ok){
         const updatedLend = {...lend, dueDate: new Date(lend.dueDate).toLocaleDateString('en-GB'),fine: 0.0}
