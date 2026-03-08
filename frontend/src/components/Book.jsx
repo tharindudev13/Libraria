@@ -6,6 +6,8 @@ const Book = ({ book }) => {
   const isAvailable = book.available_copies > 0;
   const user = useSelector((state) => {return state.user})
 
+  const token = localStorage.getItem('auth')
+
   const handleReserve = async () => {
     if(!user.isLoggedin){
       window.alert("Please login to reserve books.")
@@ -13,7 +15,13 @@ const Book = ({ book }) => {
     }
     try{
       const response = await fetch(`http://localhost:8090/api/v1/lends/newLends?email=${user.loggedEmail}&isbn=${book.isbn}`,
-        {method: 'POST'}
+        {
+          method: 'POST',
+          headers: {
+                "Authorization": `Basic ${token}`,
+                'Content-Type': 'application/json'
+              }
+        }
       )
       const result = await response.text()
       window.alert(result)

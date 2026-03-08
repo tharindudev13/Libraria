@@ -14,6 +14,9 @@ const Login = () => {
   const [password,setPassword] = useState('')
   const [error,setError] = useState('')
 
+  const authString = btoa(`${email}:${password}`)
+  localStorage.setItem('auth', authString)
+
     const validateLogin = async (email, password) => {
         try {
             const response = await fetch(`http://localhost:8090/api/v1/users/loginreq?id=${email}&pwd=${password}`);

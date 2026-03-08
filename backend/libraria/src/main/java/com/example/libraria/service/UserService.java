@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.libraria.dto.UserDto;
@@ -19,6 +20,8 @@ public class UserService {
 
     @Autowired
     private UserRepo userRepo;
+
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
     @Autowired 
     private ModelMapper modelMapper;
@@ -38,9 +41,10 @@ public class UserService {
 
    public boolean validateLogin(String email, String password) {
         Optional<User> userOpt = userRepo.findById(email);
+        
         if (userOpt.isPresent()) {
             User user = userOpt.get();
-            return user.getPassword().equals(password);
+            return passwordEncoder.matches(password, user.getPassword());
         }else{
          return false;
         }

@@ -1,12 +1,9 @@
 package com.example.libraria.model;
 
-import java.util.Collection;
 import java.util.Collections;
 
-import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties.Apiversion.Use;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 public class UserPrincipal implements UserDetails{
 
@@ -29,7 +26,7 @@ public class UserPrincipal implements UserDetails{
 
 	@Override
 	public java.util.Collection<? extends org.springframework.security.core.GrantedAuthority> getAuthorities() {
-		return Collections.singleton(new SimpleGrantedAuthority("USER"));
+		return Collections.singleton(new SimpleGrantedAuthority(user.getRole()));
 	}
 
 	@Override
